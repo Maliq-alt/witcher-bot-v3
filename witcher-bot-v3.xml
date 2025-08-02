@@ -1,0 +1,99 @@
+<xml xmlns="https://developers.google.com/blockly/xml" is_dbot="true" collection="false">
+  <variables>
+    <variable id="stake">stake</variable>
+    <variable id="profit">profit</variable>
+    <variable id="loss_count">loss_count</variable>
+    <variable id="max_loss">max_loss</variable>
+    <variable id="max_profit">max_profit</variable>
+    <variable id="multiplier">multiplier</variable>
+    <variable id="streak">streak</variable>
+  </variables>
+
+  <block type="trade_definition_tradeoptions" x="10" y="10">
+    <field name="TRADETYPE">DIGITOVER</field>
+    <field name="CURRENCY">USD</field>
+    <field name="BASIS">stake</field>
+    <field name="CONTRACT_TYPE">DIGITOVER</field>
+    <field name="DURATIONTYPE">t</field>
+    <field name="DURATION">1</field>
+    <field name="AMOUNT">0.35</field>
+    <field name="BARRIER">5</field>
+  </block>
+
+  <block type="trade_definition_strategy" x="10" y="160">
+    <field name="STRATEGY_NAME">Witcher Bot V3 (Fixed)</field>
+    <statement name="STRATEGY">
+      <block type="variables_set"><field name="VAR">stake</field>
+        <value name="VALUE"><block type="math_number"><field name="NUM">0.35</field></block></value>
+        <next>
+          <block type="variables_set"><field name="VAR">multiplier</field>
+            <value name="VALUE"><block type="math_number"><field name="NUM">2</field></block></value>
+            <next>
+              <block type="variables_set"><field name="VAR">profit</field>
+                <value name="VALUE"><block type="math_number"><field name="NUM">0</field></block></value>
+                <next>
+                  <block type="variables_set"><field name="VAR">loss_count</field>
+                    <value name="VALUE"><block type="math_number"><field name="NUM">0</field></block></value>
+                    <next>
+                      <block type="variables_set"><field name="VAR">streak</field>
+                        <value name="VALUE"><block type="math_number"><field name="NUM">0</field></block></value>
+                        <next>
+                          <block type="variables_set"><field name="VAR">max_loss</field>
+                            <value name="VALUE"><block type="math_number"><field name="NUM">-5</field></block></value>
+                            <next>
+                              <block type="variables_set"><field name="VAR">max_profit</field>
+                                <value name="VALUE"><block type="math_number"><field name="NUM">3</field></block></value>
+                                <next>
+                                  <block type="trade_execute"/>
+                                </next>
+                              </block>
+                            </next>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </next>
+          </block>
+        </next>
+      </block>
+    </statement>
+    <next>
+      <block type="after_purchase">
+        <statement name="AFTERPURCHASE">
+          <block type="controls_if">
+            <value name="IF0">
+              <block type="logic_boolean"><field name="BOOL">TRUE</field></block>
+            </value>
+            <statement name="DO0">
+              <block type="variables_set"><field name="VAR">streak</field>
+                <value name="VALUE"><block type="math_arithmetic"><field name="OP">ADD</field>
+                  <value name="A"><block type="variables_get"><field name="VAR">streak</field></block></value>
+                  <value name="B"><block type="math_number"><field name="NUM">1</field></block></value>
+                </block></value>
+              </block>
+            </statement>
+            <statement name="ELSE">
+              <block type="variables_set"><field name="VAR">stake</field>
+                <value name="VALUE"><block type="math_arithmetic"><field name="OP">MULTIPLY</field>
+                  <value name="A"><block type="variables_get"><field name="VAR">stake</field></block></value>
+                  <value name="B"><block type="variables_get"><field name="VAR">multiplier</field></block></value>
+                </block></value>
+                <next>
+                  <block type="variables_set"><field name="VAR">loss_count</field>
+                    <value name="VALUE"><block type="math_arithmetic"><field name="OP">ADD</field>
+                      <value name="A"><block type="variables_get"><field name="VAR">loss_count</field></block></value>
+                      <value name="B"><block type="math_number"><field name="NUM">1</field></block></value>
+                    </block></value>
+                  </block>
+                </next>
+              </block>
+            </statement>
+          </block>
+        </statement>
+      </block>
+    </next>
+  </block>
+</xml>
